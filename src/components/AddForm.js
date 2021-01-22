@@ -1,8 +1,30 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { addSmurf } from '../actions';
 
 class AddForm extends React.Component {
+    state = 
+        ({
+            id: Date.now(),
+            name: '',
+            position: '',
+            nickname: '',
+            description: '',
+    })
+
+    handleChange = (event) => {
+        this.setState({
+            ...this.state,
+            [event.target.name]: event.target.value
+        });
+    }
+
+        handleSubmit = (event) => {
+            this.props.addSmurf(this.state)
+        }
 
     render() {
+        //Add to the form position, nic name, description
         return(<section>
             <h2>Add Smurf</h2>
             <form>
@@ -10,15 +32,35 @@ class AddForm extends React.Component {
                     <label htmlFor="name">Name:</label><br/>
                     <input onChange={this.handleChange} name="name" id="name" />
                 </div>
+                <div className="form-group">
+                    <label htmlFor="position">Position:</label><br/>
+                    <input onChange={this.handleChange} name="position" id="position" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="name">Nick Name:</label><br/>
+                    <input onChange={this.handleChange} name="nickname" id="nickname" />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="name">Description:</label><br/>
+                    <input onChange={this.handleChange} name="description" id="description" />
+                </div>
 
                 <div data-testid="errorAlert" className="alert alert-danger" role="alert">Error: </div>
-                <button>Submit Smurf</button>
+                <button onClick={this.handleSubmit}>Submit Your Smurf</button>
             </form>
         </section>);
     }
 }
+const mapStateToProps = state => {
+    return {
+        smurfs: state.smurfs,
+        isFetching: state.isFetching,
+        error: state.error
+    }
+}
 
-export default AddForm;
+
+export default connect(mapStateToProps,{addSmurf})(AddForm);
 
 //Task List:
 //1. Add in all necessary import components and library methods.
